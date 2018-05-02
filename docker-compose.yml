@@ -2,19 +2,24 @@ version: '3'
 services:
   db:
     image: postgres
-  webpacker:
-    build: .
-    command: bundle exec bin/webpack-dev-server
     volumes:
-      - .:/tg_chat
-    ports:
-      - "8080:8080"
-  web:
+      - ./data:/var/lib/postgresql/data
+  web: &web
     build: .
+    env_file:
+      - '.env.docker'
     command: bundle exec rails s -p 5000 -b '0.0.0.0'
     volumes:
       - .:/tg_chat
+    tmpfs: ['/tg_chat/tmp', '/tg_chat/log']
     ports:
       - "5000:5000"
     depends_on:
       - db
+  webpacker:
+    <<: *web
+    command: bundle exec webpack-dev-server
+    ports:
+      - "3035:3035"
+    depends_on:
+      - web

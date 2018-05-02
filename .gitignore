@@ -10,10 +10,14 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
+/data/*
 !/log/.keep
 !/tmp/.keep
 .idea/*
 .DS_Store
+
+/config/secrets.yml
+.env*
 
 /node_modules
 /yarn-error.log
